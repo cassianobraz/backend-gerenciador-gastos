@@ -1,6 +1,6 @@
 import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
-export default class CreateTransaction1636771675251
+export default class CreateTransaction1637541263136
   implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query('CREATE EXTENSION IF NOT EXISTS "uuid-ossp"');
@@ -26,6 +26,11 @@ export default class CreateTransaction1636771675251
             isNullable: false,
           },
           {
+            name: 'description',
+            type: 'varchar',
+            isNullable: true,
+          },
+          {
             name: 'date',
             type: 'timestamp with time zone',
             isNullable: false,
@@ -33,6 +38,15 @@ export default class CreateTransaction1636771675251
           {
             name: 'user_id',
             type: 'uuid',
+          },
+          {
+            name: 'payment_id',
+            type: 'uuid',
+          },
+          {
+            name: 'cost_id',
+            type: 'uuid',
+            isNullable: true,
           },
           {
             name: 'created_at',
@@ -51,6 +65,18 @@ export default class CreateTransaction1636771675251
             columnNames: ['user_id'],
             referencedColumnNames: ['id'],
             referencedTableName: 'users',
+          },
+          {
+            name: 'TransactionPayments',
+            columnNames: ['payment_id'],
+            referencedColumnNames: ['id'],
+            referencedTableName: 'payments',
+          },
+          {
+            name: 'TransactionCosts',
+            columnNames: ['cost_id'],
+            referencedColumnNames: ['id'],
+            referencedTableName: 'costs',
           },
         ],
       }),

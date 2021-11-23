@@ -7,6 +7,8 @@ interface IRequest {
   value: number;
   user_id: string;
   date: Date;
+  cost_id: string;
+  payment_id: string;
 }
 
 @injectable()
@@ -21,12 +23,16 @@ class CreateAppointmentService {
     user_id,
     type,
     value,
+    cost_id,
+    payment_id,
   }: IRequest): Promise<Appointment> {
     const transaction = await this.transactionRepository.create({
       type,
       value,
       user_id,
       date,
+      cost_id,
+      payment_id,
     });
 
     return transaction;
