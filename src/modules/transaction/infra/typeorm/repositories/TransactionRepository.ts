@@ -33,7 +33,7 @@ class TransactionRepository implements ITransactionRepository {
 
   public async findCosts(user_id: string): Promise<ICost[]> {
     const costs = await this.ormRepository.query(
-      `select c."name", count(c."name") from transactions t inner join costs c on c.id = t.cost_id inner join users u on t.user_id  = u.id where u.id = $1 and date >= date_trunc('month', CURRENT_DATE) group by c."name"`,
+      `select c."name", sum(t.value) from transactions t inner join costs c on c.id = t.cost_id inner join users u on t.user_id  = u.id where u.id = $1 and date >= date_trunc('month', CURRENT_DATE) group by c."name"`,
       [user_id],
     );
 
@@ -42,7 +42,7 @@ class TransactionRepository implements ITransactionRepository {
 
   public async findPayments(user_id: string): Promise<IPayment[]> {
     const payments = await this.ormRepository.query(
-      `select p."name", count(p."name") from transactions t inner join payments p on p.id = t.payment_id inner join users u on t.user_id  = u.id where u.id = $1 and date >= date_trunc('month', CURRENT_DATE) group by p."name"`,
+      `select p."name", sum(t.value) from transactions t inner join payments p on p.id = t.payment_id inner join users u on t.user_id  = u.id where u.id = $1 and date >= date_trunc('month', CURRENT_DATE) group by p."name"`,
       [user_id],
     );
 
